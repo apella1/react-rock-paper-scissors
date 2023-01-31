@@ -1,34 +1,63 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import {useState} from 'react';
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+function generateComputerChoice(compChoice) {
+	const randNum = Math.floor(Math.random() * 3)
+	
+	switch (randNum) {
+		case 1:
+			compChoice == 'Rock'
+			break;
+		case 2:
+			compChoice == 'Paper'
+			break;
+		default:
+			compChoice == 'Scissors'
+	}
+}
 
-  return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+
+
+function computeWinner (gameResult) { 
+	switch (compChoice, playerChoice) {
+		case compChoice == playerChoice:
+			gameResult = 'Draw'
+			break;
+		case playerChoice == 'Rock' && compChoice == 'Scissors':
+		case playerChoice == 'Scissors' && compChoice == 'Paper':
+		case playerChoice == 'Paper' && compChoice == 'Rock':
+			gameResult = 'You won'
+			break;
+		default:
+			gameResult = 'You Lost'
+	}
+
+}
+
+function handleClick (choice) {
+	const [playerChoice, setPlayerChoice] = useState(null)
+	setPlayerChoice(choice);
+	generateComputerChoice();
+	computeWinner();
+}
+
+
+function App({ playerChoice, compChoice, handleClick, gameResult }) {
+
+	return (
+		<div className="App">
+			<div className="options">
+				<button onClick={handleClick('Rock')}>Rock</button>
+				<button onClick={handleClick('Paper')}>Paper</button>
+				<button onClick={handleClick('Scissors')}>Scissors</button>
+			</div>
+			<div className="play">
+				<h2>You: {playerChoice}</h2>
+				<h2>Computer: {compChoice}</h2>
+				<h2>Result: {gameResult}</h2>
+			</div>
+		</div>
+	)
 }
 
 export default App
